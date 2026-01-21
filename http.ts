@@ -1,5 +1,5 @@
 /***************************************************
- * ESP8266 MakeCode Library (NO DEBUG / NO LED)
+ * ESP8266 MakeCode Library (NO DEBUGG / NO LED)
  ***************************************************/
 
 namespace esp8266 {
