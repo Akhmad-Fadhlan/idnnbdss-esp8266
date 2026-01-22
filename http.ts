@@ -301,6 +301,26 @@ namespace esp8266 {
                response.indexOf("201") >= 0 || 
                response.indexOf("204") >= 0
     }
+
+    /**
+     * Check if last HTTP request was successful
+     */
+    //% weight=29
+    //% subcategory="HTTP"
+    //% block="last HTTP request success"
+    export function lastHttpSuccess(): boolean {
+        return rxData.indexOf("200") >= 0 || rxData.indexOf("201") >= 0
+    }
+
+    /**
+     * Check if last HTTP request failed
+     */
+    //% weight=28
+    //% subcategory="HTTP"
+    //% block="last HTTP request failed"
+    export function lastHttpFailed(): boolean {
+        return !lastHttpSuccess()
+    }
     
     /**
      * Extract body from HTTP response
@@ -345,5 +365,44 @@ namespace esp8266 {
             return code
         }
         return 0
+    }
+
+    /**
+     * Check if response has specific status code
+     */
+    //% weight=19
+    //% subcategory="HTTP"
+    //% block="response has status %code"
+    //% code.defl=200
+    export function responseHasStatus(code: number): boolean {
+        let codeStr = "" + code
+        return rxData.indexOf(codeStr) >= 0
+    }
+
+    /**
+     * Simple GET request to local server
+     */
+    //% weight=18
+    //% subcategory="HTTP"
+    //% block="GET from local|IP %ip|path %path"
+    //% ip.defl="192.168.1.100"
+    //% path.defl="/api/data"
+    export function simpleGet(ip: string, path: string): string {
+        return httpGet("http://" + ip + path)
+    }
+
+    /**
+     * Simple POST to local server with sensor data
+     */
+    //% weight=17
+    //% subcategory="HTTP"
+    //% block="POST sensor to local|IP %ip|path %path|value %value"
+    //% ip.defl="192.168.1.100"
+    //% path.defl="/api/sensor"
+    //% value.defl=25
+    export function simplePostSensor(ip: string, path: string, value: number): boolean {
+        let json = "{\"value\":" + value + "}"
+        let response = httpPost("http://" + ip + path, json)
+        return response.indexOf("200") >= 0
     }
 }
